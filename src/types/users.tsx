@@ -5,11 +5,11 @@
  */
 
 export interface LoginInput {
-  nickname: string;
+  username: string;
   password: string;
 }
 
 export type User = {
   id: number;
-  nickname: string;
+  username: string;
 };

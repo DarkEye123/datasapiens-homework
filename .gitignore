@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+db/server2.js
+db/routes2.json
+db/db2.json
+db/db2 copy.json

@@ -2,12 +2,12 @@
   "users": [
     {
       "id": 1,
-      "nickname": "Matej",
+      "username": "Matej",
       "password": "$2y$12$iAd9mZhblZNuyw/jciTDM.XFNgN9e8iaH3ZtbvI3ZXvRfYG4RG5XW"
     },
     {
       "id": 2,
-      "nickname": "Peter",
+      "username": "Peter",
       "password": "$2y$12$1dtkfDwHtSKjFExvuccUhedICKcjDfI.2e3xj5baXYksgUxstPQFe"
     }
   ],
