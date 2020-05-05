@@ -1,5 +1,5 @@
 {
-  "name": "advanced-rtk",
+  "name": "datasapiens-homework",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -18,9 +18,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
-    "react-scripts": "3.4.1",
-    "redux": "^4.0.5",
-    "typescript": "~3.8.3"
+    "redux": "^4.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -45,6 +43,12 @@
   },
   "devDependencies": {
     "bcryptjs": "^2.4.3",
-    "json-server": "^0.16.1"
+    "cookie-parser": "^1.4.5",
+    "cookie-session": "^1.4.0",
+    "dotenv": "^8.2.0",
+    "json-server": "^0.16.1",
+    "jsonwebtoken": "^8.5.1",
+    "react-scripts": "3.4.1",
+    "typescript": "~3.8.3"
   }
 }
