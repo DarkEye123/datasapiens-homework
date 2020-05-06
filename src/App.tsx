@@ -1,11 +1,11 @@
 import React from 'react';
-import Login from './features/users/Login';
-import User from './features/users/User';
+import Login from './components/Login';
+import AutoLogin from './components/AutoLogin';
 
 function App() {
   return (
     <>
-      <User></User>
+      <AutoLogin></AutoLogin>
       <Login></Login>
     </>
   );
