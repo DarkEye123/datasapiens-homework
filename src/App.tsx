@@ -1,12 +1,15 @@
 import React from 'react';
-import Login from './components/Login';
+import { BrowserRouter as Router } from 'react-router-dom';
 import AutoLogin from './components/AutoLogin';
+import Routes from './routes';
 
 function App() {
   return (
     <>
       <AutoLogin></AutoLogin>
-      <Login></Login>
+      <Router>
+        <Routes></Routes>
+      </Router>
     </>
   );
 }

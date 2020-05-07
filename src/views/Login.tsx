@@ -1,22 +1,24 @@
 import React, { FC, useState } from 'react';
+import { RouteProps, Redirect } from 'react-router-dom';
 import LoginFeature, { LoginProps } from '../features/users/Login';
-import { User } from '../types/users';
+import { PAGES } from '../routes';
 
-const Login: FC<LoginProps> = ({ loggedUser, loading, logIn }) => {
+const Login: FC<LoginProps & RouteProps> = ({
+  loggedUser,
+  loading,
+  logIn,
+  location,
+}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { from }: any = location?.state || { from: { pathname: PAGES.home } };
 
   if (loading) {
     return <div>loading</div>;
   }
 
   if (loggedUser) {
-    loggedUser = loggedUser as User;
-    return (
-      <>
-        <div>I'm Here {loggedUser.username}</div>
-      </>
-    );
+    return <Redirect to={from} />;
   }
 
   return (

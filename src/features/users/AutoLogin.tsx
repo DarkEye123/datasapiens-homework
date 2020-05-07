@@ -1,5 +1,5 @@
-import { autologin } from './userSlice';
 import { connect } from 'react-redux';
+import { autologin } from './userSlice';
 
 const mapDispatchToProps = {
   autologin,

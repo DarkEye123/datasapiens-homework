@@ -38,6 +38,7 @@ const autologinThunkPayloadCreator: AsyncThunkPayloadCreator<User | null> = asyn
 interface State {
   loggedUser: User | null;
   loading: boolean;
+  autologinDone: boolean;
   errors: AppError[];
 }
 
@@ -49,7 +50,12 @@ const autologin = createAsyncThunk(
 
 const userSlice = createSlice({
   name: 'users',
-  initialState: { loggedUser: null, loading: false, errors: [] } as State,
+  initialState: {
+    loggedUser: null,
+    loading: false,
+    errors: [],
+    autologinDone: false,
+  } as State,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state, action) => {
@@ -67,12 +73,14 @@ const userSlice = createSlice({
     builder.addCase(autologin.fulfilled, (state, action) => {
       state.loggedUser = action.payload as User;
       state.loading = false;
+      state.autologinDone = true;
     });
     builder.addCase(autologin.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(autologin.rejected, (state) => {
       state.loading = false;
+      state.autologinDone = true;
     });
   },
 });
