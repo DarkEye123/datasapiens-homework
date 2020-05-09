@@ -2,6 +2,7 @@ import {
   createSlice,
   createAsyncThunk,
   AsyncThunkPayloadCreator,
+  CaseReducer,
 } from '@reduxjs/toolkit';
 import { LoginInput } from '../../types/users';
 import * as UserService from '../../services/UserService';
@@ -42,11 +43,53 @@ interface State {
   errors: AppError[];
 }
 
+type LoginPayloadAction =
+  | ReturnType<typeof loginUser.fulfilled>
+  | ReturnType<typeof loginUser.rejected>;
+
+type AutoLoginPayloadAction = ReturnType<typeof autologin.fulfilled>;
+
 const loginUser = createAsyncThunk('users/login', loginThunkPayloadCreator);
 const autologin = createAsyncThunk(
   'users/autologin',
   autologinThunkPayloadCreator,
 );
+
+const loginFulfilled: CaseReducer<State, LoginPayloadAction> = (
+  state,
+  action,
+) => {
+  state.loggedUser = action.payload as User;
+  state.loading = false;
+};
+
+const loginPending: CaseReducer<State> = (state) => {
+  state.loading = true;
+};
+
+const loginRejected: CaseReducer<State, LoginPayloadAction> = (
+  state,
+  action,
+) => {
+  state.loading = false;
+  state.errors.concat(action.payload as AppError[]);
+};
+
+const autologinFulfilled: CaseReducer<State, AutoLoginPayloadAction> = (
+  state,
+  action,
+) => {
+  state.loggedUser = action.payload as User;
+  state.loading = false;
+  state.autologinDone = true;
+};
+
+const autologinPending = loginPending;
+
+const autologinRejected: CaseReducer<State> = (state) => {
+  state.loading = false;
+  state.autologinDone = true;
+};
 
 const userSlice = createSlice({
   name: 'users',
@@ -58,30 +101,12 @@ const userSlice = createSlice({
   } as State,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.loggedUser = action.payload as User;
-      state.loading = false;
-    });
-    builder.addCase(loginUser.pending, (state) => {
-      state.loading = true;
-    });
-    builder.addCase(loginUser.rejected, (state, action) => {
-      state.loggedUser = null;
-      state.loading = false;
-      state.errors.concat(action.payload as AppError[]);
-    });
-    builder.addCase(autologin.fulfilled, (state, action) => {
-      state.loggedUser = action.payload as User;
-      state.loading = false;
-      state.autologinDone = true;
-    });
-    builder.addCase(autologin.pending, (state) => {
-      state.loading = true;
-    });
-    builder.addCase(autologin.rejected, (state) => {
-      state.loading = false;
-      state.autologinDone = true;
-    });
+    builder.addCase(loginUser.fulfilled, loginFulfilled);
+    builder.addCase(loginUser.pending, loginPending);
+    builder.addCase(loginUser.rejected, loginRejected);
+    builder.addCase(autologin.fulfilled, autologinFulfilled);
+    builder.addCase(autologin.pending, autologinPending);
+    builder.addCase(autologin.rejected, autologinRejected);
   },
 });
 
