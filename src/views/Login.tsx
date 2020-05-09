@@ -99,6 +99,7 @@ const Login: FC<LoginProps & RouteProps> = ({
                   label="Username"
                   disabled={loading}
                   InputProps={{
+                    'aria-label': 'Username',
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton disabled>
@@ -126,6 +127,7 @@ const Login: FC<LoginProps & RouteProps> = ({
                   label="Password"
                   disabled={loading}
                   InputProps={{
+                    'aria-label': 'Password',
                     endAdornment: (
                       <InputAdornment
                         position="end"
@@ -147,6 +149,7 @@ const Login: FC<LoginProps & RouteProps> = ({
               </Grid>
               <Grid item justify="flex-end" container>
                 <Button
+                  aria-label="Log in"
                   variant="contained"
                   color="primary"
                   onClick={submitForm}
