@@ -1,63 +1,13 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  AsyncThunkPayloadCreator,
-  CaseReducer,
-} from '@reduxjs/toolkit';
-import * as CashflowService from '../../services/CashflowService';
+import { createSlice } from '@reduxjs/toolkit';
 import { Budget } from '../../types/budget';
 import { AppError } from '../../types/errors';
+import { build as buildGetBudgets, fetchBudgets } from './budgetListReducer';
 
-const budgetsThunkPayloadCreator: AsyncThunkPayloadCreator<
-  Budget[] | AppError[],
-  number
-> = async (args, { rejectWithValue }) => {
-  try {
-    const response = await CashflowService.getBudgets({ userId: args });
-    return response.data as Budget[];
-  } catch (e) {
-    if (!e.response) {
-      throw e;
-    }
-    return rejectWithValue(e.response.errors as AppError[]);
-  }
-};
-
-interface State {
+export interface State {
   budgets: Budget[];
   loading: boolean;
   errors: AppError[];
 }
-
-type BudgetsPayloadAction =
-  | ReturnType<typeof getBudgets.fulfilled>
-  | ReturnType<typeof getBudgets.rejected>;
-
-const getBudgets = createAsyncThunk(
-  'cashflow/getBudgets',
-  budgetsThunkPayloadCreator,
-);
-
-const budgetsFulfilled: CaseReducer<State, BudgetsPayloadAction> = (
-  state,
-  action,
-) => {
-  state.budgets = action.payload as Budget[];
-  state.loading = false;
-};
-
-const budgetsPending: CaseReducer<State> = (state) => {
-  state.loading = true;
-};
-
-const budgetsRejected: CaseReducer<State, BudgetsPayloadAction> = (
-  state,
-  action,
-) => {
-  state.budgets = [];
-  state.loading = false;
-  state.errors.concat(action.payload as AppError[]);
-};
 
 const cashflowSlice = createSlice({
   name: 'cashflow',
@@ -68,11 +18,9 @@ const cashflowSlice = createSlice({
   } as State,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getBudgets.fulfilled, budgetsFulfilled);
-    builder.addCase(getBudgets.pending, budgetsPending);
-    builder.addCase(getBudgets.rejected, budgetsRejected);
+    buildGetBudgets(builder);
   },
 });
 
-export { getBudgets };
+export { fetchBudgets };
 export default cashflowSlice.reducer;

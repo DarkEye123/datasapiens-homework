@@ -35,7 +35,7 @@ interface FormValidationValues {
 }
 
 const Login: FC<LoginProps & RouteProps> = ({
-  loggedUser,
+  user,
   loading,
   logIn,
   location,
@@ -44,7 +44,7 @@ const Login: FC<LoginProps & RouteProps> = ({
   const classes = useStyles();
   const { from }: any = location?.state || { from: { pathname: PAGES.home } };
 
-  if (loggedUser) {
+  if (user) {
     return <Redirect to={from} />;
   }
 

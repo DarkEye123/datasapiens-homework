@@ -8,7 +8,7 @@ export interface Budget {
 }
 
 export interface FetchBudgetsInput {
-  userId: number;
+  userID: number;
 }
 
 export interface FetchCashflowInput {

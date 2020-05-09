@@ -1,19 +1,19 @@
 import { connect } from 'react-redux';
-import { getBudgets } from './cashflowSlice';
+import { fetchBudgets } from './cashflowSlice';
 import { RootState } from '..';
 
 const mapDispatchToProps = {
-  getBudgets,
+  fetchBudgets,
 };
 
 interface DispatchShape {
-  getBudgets: (userId: number) => void;
+  fetchBudgets: (userID: number) => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
   budgets: state.cashflow.budgets,
   loading: state.cashflow.loading,
-  user: state.users.loggedUser,
+  user: state.users.user,
 });
 
 export type BudgetsProps = ReturnType<typeof mapStateToProps> & DispatchShape;

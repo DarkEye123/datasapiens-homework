@@ -4,7 +4,7 @@ import { AppDispatch } from '../../store';
 import { loginUser } from './userSlice';
 
 const mapStateToProps = (state: RootState) => ({
-  loggedUser: state.users.loggedUser,
+  user: state.users.user,
   loading: state.users.loading,
 });
 

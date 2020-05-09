@@ -5,7 +5,7 @@ import { PAGES } from '../../routes';
 import { RootState } from '..';
 
 const mapStateToProps = (state: RootState) => ({
-  loggedUser: state.users.loggedUser,
+  user: state.users.user,
   loading: state.users.loading,
   autologinFinished: state.users.autologinDone,
 });
@@ -14,7 +14,7 @@ type RouteGuardProps = RouteProps & ReturnType<typeof mapStateToProps>;
 
 const RouteGuard: FC<RouteGuardProps> = ({
   component: Component,
-  loggedUser,
+  user,
   loading,
   autologinFinished,
   location,
@@ -29,7 +29,7 @@ const RouteGuard: FC<RouteGuardProps> = ({
     return <div>loading route</div>;
   }
 
-  if (!loggedUser) {
+  if (!user) {
     return (
       <Redirect
         to={{

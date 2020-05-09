@@ -7,11 +7,11 @@ interface BudgetAPIResponse extends APIResponse {
 }
 
 export async function getBudgets({
-  userId,
+  userID,
 }: FetchBudgetsInput): Promise<BudgetAPIResponse> {
   try {
     const response = await client.get<BudgetAPIResponse>(
-      `/users/${userId}/budgets`,
+      `/users/${userID}/budgets`,
     );
     const { data } = response.data;
     return { data, errors: null };

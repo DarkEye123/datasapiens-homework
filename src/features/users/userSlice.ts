@@ -37,7 +37,7 @@ const autologinThunkPayloadCreator: AsyncThunkPayloadCreator<User | null> = asyn
 };
 
 interface State {
-  loggedUser: User | null;
+  user: User | null;
   loading: boolean;
   autologinDone: boolean;
   errors: AppError[];
@@ -59,7 +59,7 @@ const loginFulfilled: CaseReducer<State, LoginPayloadAction> = (
   state,
   action,
 ) => {
-  state.loggedUser = action.payload as User;
+  state.user = action.payload as User;
   state.loading = false;
 };
 
@@ -79,7 +79,7 @@ const autologinFulfilled: CaseReducer<State, AutoLoginPayloadAction> = (
   state,
   action,
 ) => {
-  state.loggedUser = action.payload as User;
+  state.user = action.payload as User;
   state.loading = false;
   state.autologinDone = true;
 };
@@ -94,7 +94,7 @@ const autologinRejected: CaseReducer<State> = (state) => {
 const userSlice = createSlice({
   name: 'users',
   initialState: {
-    loggedUser: null,
+    user: null,
     loading: false,
     errors: [],
     autologinDone: false,

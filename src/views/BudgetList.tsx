@@ -1,14 +1,14 @@
 import React, { FC, useEffect } from 'react';
 import { Grid, Backdrop, CircularProgress } from '@material-ui/core';
-import BudgetsFeature, {
+import BudgetListFeature, {
   BudgetsProps,
-} from '../features/cashflow/BudgetsFeature';
+} from '../features/cashflow/BudgetList';
 import { Redirect } from 'react-router-dom';
 import { PAGES } from '../routes';
 
-const Home: FC<BudgetsProps> = ({ getBudgets, user, budgets, loading }) => {
+const Home: FC<BudgetsProps> = ({ fetchBudgets, user, budgets, loading }) => {
   useEffect(() => {
-    getBudgets(user!.id);
+    fetchBudgets(user!.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -29,4 +29,5 @@ const Home: FC<BudgetsProps> = ({ getBudgets, user, budgets, loading }) => {
   return <Grid container>TODO: multiple budgets</Grid>;
 };
 
-export default BudgetsFeature(Home);
+export { Home as BudgetList };
+export default BudgetListFeature(Home);
