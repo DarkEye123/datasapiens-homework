@@ -1,10 +1,9 @@
 import { client } from './NetworkService';
 import { User, LoginInput } from '../types/users';
-import { AppError } from '../types/errors';
+import { APIResponse } from './common';
 
-interface UserAPIResponse {
-  data: User[] | User;
-  errors: AppError[];
+interface UserAPIResponse extends APIResponse {
+  data: User[] | User | null;
 }
 
 export async function login(args: LoginInput): Promise<UserAPIResponse> {

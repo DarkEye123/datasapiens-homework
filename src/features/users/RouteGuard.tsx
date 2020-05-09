@@ -33,7 +33,7 @@ const RouteGuard: FC<RouteGuardProps> = ({
     return (
       <Redirect
         to={{
-          pathname: PAGES.login,
+          pathname: PAGES.login.name,
           state: { from: location },
         }}
       />

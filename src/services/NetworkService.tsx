@@ -7,7 +7,7 @@ export interface NetworkError {
 }
 
 export const client = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: 'http://localhost:3001/api/v1',
   withCredentials: true,
   headers: {
     Accept: 'application/json',
