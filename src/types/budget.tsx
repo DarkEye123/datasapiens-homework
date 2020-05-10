@@ -5,10 +5,32 @@ type Filter = {
 
 export interface Budget {
   id: number;
+  categories: Category[];
 }
 
-export interface FetchBudgetsInput {
-  userID: number;
+export interface FetchEntriesInput {
+  categoryID: number;
+}
+
+export interface Entry {
+  id: number;
+  categoryId: number;
+  date: Date;
+  value: number;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  expenses: Entry[];
+  incomes: Entry[];
+}
+
+export interface DonutGraphCategory {
+  id: string;
+  label: string;
+  value: number;
+  category: Category;
 }
 
 export interface FetchCashflowInput {

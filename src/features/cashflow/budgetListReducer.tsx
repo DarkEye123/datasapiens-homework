@@ -14,7 +14,7 @@ const budgetsThunkPayloadCreator: AsyncThunkPayloadCreator<
   number
 > = async (args, { rejectWithValue }) => {
   try {
-    const response = await CashflowService.getBudgets({ userID: args });
+    const response = await CashflowService.getBudgets(args);
     return response.data as Budget[];
   } catch (e) {
     if (!e.response) {
@@ -29,7 +29,7 @@ type BudgetsPayloadAction =
   | ReturnType<typeof fetchBudgets.rejected>;
 
 const fetchBudgets = createAsyncThunk(
-  'cashflow/getBudgets',
+  'cashflow/fetchBudgets',
   budgetsThunkPayloadCreator,
 );
 

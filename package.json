@@ -5,6 +5,9 @@
   "dependencies": {
     "@material-ui/core": "^4.9.13",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.52",
+    "@nivo/bar": "^0.61.1",
+    "@nivo/pie": "^0.61.1",
     "@reduxjs/toolkit": "^1.3.5",
     "@testing-library/jest-dom": "^5.7.0",
     "@testing-library/react": "^10.0.4",
@@ -13,6 +16,7 @@
     "formik": "^2.1.4",
     "formik-material-ui": "^2.0.0-beta.1",
     "i18next": "^19.4.4",
+    "material-table": "^1.57.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-i18next": "^11.4.0",
