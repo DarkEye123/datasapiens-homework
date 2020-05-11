@@ -3,7 +3,7 @@ import {
   DonutGraphCategory,
   BarGraphEntry,
   Entry,
-} from '../../types/budget';
+} from '../types/budget';
 
 function donutDataTransformer(
   data: Category | Category[],
@@ -74,4 +74,8 @@ function barDataTransformer({ expenses, incomes }: Category): BarGraphEntry[] {
   return Object.values(entries);
 }
 
-export { donutDataTransformer, barDataTransformer };
+function isMobile() {
+  return 'ontouchstart' in document.documentElement;
+}
+
+export { donutDataTransformer, barDataTransformer, isMobile };
