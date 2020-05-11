@@ -12,7 +12,6 @@ const MyResponsiveBar = ({ legendLabel = 'CATEGORY', data }) => (
       colors={(x) => (x.id === 'total income' ? '#97e3d5' : '#f47560')}
       margin={{ top: 200, right: 130, bottom: 200, left: 60 }}
       padding={0.3}
-      // enableGridY={false}
       enableGridX={true}
       label={(d) => Math.abs(d.value)}
       axisTop={{
@@ -27,6 +26,15 @@ const MyResponsiveBar = ({ legendLabel = 'CATEGORY', data }) => (
         tickPadding: 12,
       }}
       axisLeft={null}
+      axisRight={{
+        tickSize: 5,
+        tickPadding: 5,
+        tickRotation: 0,
+        legend: 'CASH',
+        format: (v) => `${Math.abs(v)} CZK`,
+        legendPosition: 'middle',
+        legendOffset: 120,
+      }}
       markers={[
         {
           axis: 'y',
