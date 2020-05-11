@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 import { GraphWrapper } from '../styles';
 import Tooltip from './tooltip';
 
 const MyResponsivePie = ({ onOpen, data, selected = null }) => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
   const [category, setCategory] = useState(selected);
   const [tempCategory, setTempCategory] = useState(null);
 
@@ -11,19 +15,10 @@ const MyResponsivePie = ({ onOpen, data, selected = null }) => {
     setCategory(selected);
   }, [selected]);
 
-  const handleDoubleClick = (() => {
-    let click = 0;
-    return (data) => {
-      click++;
-      if (click >= 2) {
-        click = 0;
-        setCategory(data);
-        onOpen(data);
-      } else {
-        setTimeout(() => (click = 0), 350);
-      }
-    };
-  })();
+  const handleClick = (data) => {
+    setCategory(data);
+    onOpen(data);
+  };
 
   return (
     <GraphWrapper>
@@ -37,7 +32,7 @@ const MyResponsivePie = ({ onOpen, data, selected = null }) => {
         borderWidth={1}
         borderColor={{ from: 'color', modifiers: [['darker', 2]] }}
         radialLabelsLinkStrokeWidth={3}
-        radialLabelsLinkOffset={20}
+        radialLabelsLinkOffset={matches ? 20 : 10}
         radialLabelsLinkColor={{ from: 'color' }}
         defs={[
           {
@@ -66,7 +61,7 @@ const MyResponsivePie = ({ onOpen, data, selected = null }) => {
         animate={true}
         motionStiffness={90}
         motionDamping={15}
-        onClick={handleDoubleClick}
+        onClick={handleClick}
         tooltip={Tooltip}
       />
     </GraphWrapper>
