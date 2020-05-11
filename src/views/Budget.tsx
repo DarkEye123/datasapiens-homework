@@ -6,11 +6,9 @@ import BudgetFeature, { BudgetProps } from '../features/cashflow/Budget';
 import Bar from '../components/Graphs/Bar';
 import Donut from '../components/Graphs/Donut';
 import { Grid, Typography } from '@material-ui/core';
-import {
-  donutDataTransformer,
-  barDataTransformer,
-} from '../components/Graphs/utils';
+import { donutDataTransformer, barDataTransformer } from '../utils/graph';
 import { DonutGraphCategory, Category } from '../types/budget';
+import AddButton from '../components/Buttons/Add';
 
 const Budget: FC<BudgetProps> = ({ budget, fetchBudget, loading }) => {
   const { id } = useParams();
@@ -46,35 +44,38 @@ const Budget: FC<BudgetProps> = ({ budget, fetchBudget, loading }) => {
 
   if (budget) {
     return (
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="h2">
-            You have {budget.categories.length} categories
-          </Typography>
+      <>
+        <AddButton></AddButton>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography variant="h2">
+              You have {budget.categories.length} categories
+            </Typography>
+          </Grid>
+          {currentCategory && (
+            <>
+              <Grid item xs={12}>
+                <Donut
+                  selected={donutDataTransformer(currentCategory)}
+                  onOpen={(data: DonutGraphCategory) =>
+                    setCurrentCategory(data.category)
+                  }
+                  data={donutDataTransformer(budget.categories)}
+                ></Donut>
+              </Grid>
+              <Grid item xs={12}>
+                <Bar
+                  legendLabel={currentCategory.name}
+                  data={barDataTransformer(currentCategory)}
+                ></Bar>
+              </Grid>
+            </>
+          )}
         </Grid>
-        {currentCategory && (
-          <>
-            <Grid item xs={12}>
-              <Donut
-                selected={donutDataTransformer(currentCategory)}
-                onOpen={(data: DonutGraphCategory) =>
-                  setCurrentCategory(data.category)
-                }
-                data={donutDataTransformer(budget.categories)}
-              ></Donut>
-            </Grid>
-            <Grid item xs={12}>
-              <Bar
-                legendLabel={currentCategory.name}
-                data={barDataTransformer(currentCategory)}
-              ></Bar>
-            </Grid>
-          </>
-        )}
-      </Grid>
+      </>
     );
   }
-  return <div>budget {id}</div>;
+  return null;
 };
 
 export default BudgetFeature(Budget);
