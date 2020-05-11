@@ -1,11 +1,5 @@
 import React, { FC } from 'react';
-import {
-  Typography,
-  Grid,
-  makeStyles,
-  Theme,
-  createStyles,
-} from '@material-ui/core';
+import { Typography, Grid, makeStyles, createStyles } from '@material-ui/core';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import { DonutGraphCategory } from '../../../types/budget';
 
@@ -38,7 +32,7 @@ const Tooltip: FC<DonutGraphCategory & { color: string }> = ({
         </Typography>
         <hr></hr>
         <Typography variant="caption" display="block" gutterBottom>
-          currently selected: <span className={classes.square}>■</span>
+          <span className={classes.square}>■</span>
           {id}:<b>{value}</b>
         </Typography>
       </Grid>

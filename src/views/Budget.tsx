@@ -6,7 +6,10 @@ import BudgetFeature, { BudgetProps } from '../features/cashflow/Budget';
 import Bar from '../components/Graphs/Bar';
 import Donut from '../components/Graphs/Donut';
 import { Grid, Typography } from '@material-ui/core';
-import { donutDataTransformer } from '../components/Graphs/Donut/utils';
+import {
+  donutDataTransformer,
+  barDataTransformer,
+} from '../components/Graphs/utils';
 import { DonutGraphCategory, Category } from '../types/budget';
 
 const Budget: FC<BudgetProps> = ({ budget, fetchBudget, loading }) => {
@@ -18,6 +21,12 @@ const Budget: FC<BudgetProps> = ({ budget, fetchBudget, loading }) => {
     fetchBudget(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  useEffect(() => {
+    if (budget) {
+      setCurrentCategory(budget.categories[0]);
+    }
+  }, [budget]);
 
   if (loading) {
     return (
@@ -43,23 +52,25 @@ const Budget: FC<BudgetProps> = ({ budget, fetchBudget, loading }) => {
             You have {budget.categories.length} categories
           </Typography>
         </Grid>
-        <Grid item xs={12}>
-          <Donut
-            // selected={donutDataCreator([currentCategory])}
-            onOpen={(data: DonutGraphCategory) =>
-              setCurrentCategory(data.category)
-            }
-            data={donutDataTransformer(budget.categories)}
-          ></Donut>
-        </Grid>
-        <Grid item xs={12}>
-          <Donut
-            onOpen={(data: DonutGraphCategory) =>
-              setCurrentCategory(data.category)
-            }
-            data={donutDataTransformer(budget.categories)}
-          ></Donut>
-        </Grid>
+        {currentCategory && (
+          <>
+            <Grid item xs={12}>
+              <Donut
+                selected={donutDataTransformer(currentCategory)}
+                onOpen={(data: DonutGraphCategory) =>
+                  setCurrentCategory(data.category)
+                }
+                data={donutDataTransformer(budget.categories)}
+              ></Donut>
+            </Grid>
+            <Grid item xs={12}>
+              <Bar
+                legendLabel={currentCategory.name}
+                data={barDataTransformer(currentCategory)}
+              ></Bar>
+            </Grid>
+          </>
+        )}
       </Grid>
     );
   }

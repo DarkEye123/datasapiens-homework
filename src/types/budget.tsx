@@ -19,6 +19,18 @@ export interface Entry {
   value: number;
 }
 
+export interface BarGraphEntry {
+  id: string;
+  entries: Entry[];
+  'total income': number;
+  'total expenses': number;
+  expenses: Entry[];
+  incomes: Entry[];
+  transactions: number;
+  transactionsIncome: number;
+  transactionsExpenses: number;
+}
+
 export interface Category {
   id: number;
   name: string;
