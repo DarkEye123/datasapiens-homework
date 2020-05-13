@@ -17,7 +17,9 @@ const budgetThunkPayloadCreator: AsyncThunkPayloadCreator<
     let categories: Category[] = [];
     const response = await CashflowService.getCategories(args);
     const promises = [];
-    for (const category of response.data!) {
+    for (const category of response.data as Category[]) {
+      category.expenses = [];
+      category.incomes = [];
       categories.push(category);
       promises.push(
         CashflowService.getEntriesForCategory({ categoryID: category.id }),
@@ -26,15 +28,18 @@ const budgetThunkPayloadCreator: AsyncThunkPayloadCreator<
     const entries = await Promise.all(promises);
     for (const entry of entries) {
       const [expenses, incomes] = entry;
-      const id = expenses.data
-        ? expenses.data[0].categoryId
-        : incomes.data![0].categoryId;
-      const category = categories.find((c) => c.id === id) as Category;
-      category.expenses = expenses.data || [];
-      category.incomes = incomes.data || [];
+      if (expenses.data?.length || incomes.data?.length) {
+        const id = expenses.data
+          ? expenses.data[0].categoryId
+          : incomes.data![0].categoryId;
+        const category = categories.find((c) => c.id === id) as Category;
+        category.expenses = expenses.data || [];
+        category.incomes = incomes.data || [];
+      }
     }
     return categories;
   } catch (e) {
+    console.log(e);
     if (!e.response) {
       throw e;
     }

@@ -7,26 +7,95 @@ import Bar from '../components/Graphs/Bar';
 import Donut from '../components/Graphs/Donut';
 import { Grid, Typography } from '@material-ui/core';
 import { donutDataTransformer, barDataTransformer } from '../utils/graph';
-import { DonutGraphCategory, Category } from '../types/budget';
+import { DonutGraphCategory, Category, Entry } from '../types/budget';
 import AddButton from '../components/Buttons/Add';
+import Dialog from '../components/Dialog';
+import Stepper, { StepperLabel } from '../components/Stepper';
+import EntryForm from '../components/Forms/CreateEntry';
+import CreateForm, {
+  CallbackProps,
+} from '../components/Forms/SelectCreateCategory';
+import { prepareCategoryData } from '../utils/forms';
 
-const Budget: FC<BudgetProps> = ({ budget, fetchBudget, loading }) => {
+type StepperInput = {
+  activeIndex: number;
+  labels: StepperLabel[];
+  forms: React.FC<any>[];
+};
+
+const Budget: FC<BudgetProps> = ({
+  budget,
+  fetchBudget,
+  loading,
+  createCategory,
+  taskDone,
+}) => {
   const { id } = useParams();
-
+  const [editedEntry, setEditedEntry] = useState<Partial<Entry>>({});
   const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
+  // in ideal world thous would be probably managed via ctx
+  const handlers = [handleEntryForm, handleCreateForm];
+  const [steps, setSteps] = useState<StepperInput>({
+    activeIndex: 0,
+    labels: [
+      { completed: false, isOptional: false, text: 'Create Entry' },
+      { completed: false, isOptional: false, text: 'Select/Create Category' },
+    ],
+    forms: [
+      ({ onConfirm }) => <EntryForm onConfirm={onConfirm} />,
+      ({ onConfirm, currentCategory, categories }) => (
+        <CreateForm
+          onConfirm={onConfirm}
+          defaultCategory={currentCategory}
+          categories={categories}
+        />
+      ),
+    ],
+  });
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  function handleEntryForm(data: Partial<Entry>) {
+    setEditedEntry({ ...data });
+    setSteps({ ...steps, activeIndex: steps.activeIndex + 1 });
+  }
+
+  function handleCreateForm({ category, createRequested }: CallbackProps) {
+    const entry = { date: editedEntry.date!, value: editedEntry.value! };
+    if (createRequested) {
+      const payload = prepareCategoryData(category as string, entry);
+      createCategory({ budgetID: budget!.id, payload });
+    } else {
+      // const payload = prepareCategoryData(category as Category, entry);
+      // updateCategory({ budgetID: budget!.id, payload });
+    }
+  }
+
+  function handleDialogClose() {
+    setDialogOpen(false);
+    setSteps({ ...steps, activeIndex: 0 });
+    setEditedEntry({});
+  }
 
   useEffect(() => {
     fetchBudget(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-
   useEffect(() => {
     if (budget) {
       setCurrentCategory(budget.categories[0]);
     }
   }, [budget]);
+  useEffect(() => {
+    if (taskDone) {
+      handleDialogClose();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [taskDone]);
 
-  if (loading) {
+  // console.log('LOADING', loading);
+  // console.log('otvoreny', dialogOpen && !taskDone);
+
+  if (loading && !dialogOpen) {
     return (
       <div>
         <Skeleton>
@@ -42,10 +111,30 @@ const Budget: FC<BudgetProps> = ({ budget, fetchBudget, loading }) => {
     );
   }
 
+  // console.log('B', steps);
+  // console.log('B', steps.forms[steps.activeIndex]);
+
   if (budget) {
     return (
       <>
-        <AddButton></AddButton>
+        <AddButton onClick={() => setDialogOpen(true)}></AddButton>
+        <Dialog
+          open={dialogOpen}
+          onClose={handleDialogClose}
+          title={
+            <Stepper
+              activeIndex={steps.activeIndex}
+              labels={steps.labels}
+            ></Stepper>
+          }
+        >
+          {currentCategory &&
+            steps.forms[steps.activeIndex]({
+              onConfirm: handlers[steps.activeIndex],
+              currentCategory,
+              categories: budget.categories,
+            })}
+        </Dialog>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant="h2">
@@ -78,4 +167,5 @@ const Budget: FC<BudgetProps> = ({ budget, fetchBudget, loading }) => {
   return null;
 };
 
+export { Budget };
 export default BudgetFeature(Budget);

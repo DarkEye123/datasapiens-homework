@@ -1,5 +1,11 @@
 import { APIResponse } from './common';
-import { Budget, Category, FetchEntriesInput, Entry } from '../types/budget';
+import {
+  Budget,
+  Category,
+  FetchEntriesInput,
+  Entry,
+  CreateCategoryInput,
+} from '../types/budget';
 import { client } from './NetworkService';
 
 interface BudgetAPIResponse extends APIResponse {
@@ -7,7 +13,7 @@ interface BudgetAPIResponse extends APIResponse {
 }
 
 interface CategoryAPIResponse extends APIResponse {
-  data: Category[] | null;
+  data: Category[] | Category | null;
 }
 
 interface EntryAPIResponse extends APIResponse {
@@ -86,4 +92,24 @@ export async function getEntriesForCategory(arg: FetchEntriesInput) {
     getExpensesForCategory(arg),
     getIncomeForCategory(arg),
   ]);
+}
+
+export async function createCategory({
+  budgetID,
+  payload,
+}: CreateCategoryInput): Promise<CategoryAPIResponse> {
+  try {
+    const response = await client.post<CategoryAPIResponse>(`/categories/`, {
+      budgetId: budgetID,
+      name: payload.name,
+      expenses: payload.expenses,
+      incomes: payload.incomes,
+    });
+    const { data } = response.data;
+    return { data, errors: null };
+  } catch (err) {
+    console.log('category err');
+    return { data: null, errors: err };
+    // return makeMediaError(err) || makeNetworkError(err);
+  }
 }

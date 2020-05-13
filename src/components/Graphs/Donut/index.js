@@ -7,7 +7,7 @@ import Tooltip from './tooltip';
 
 const MyResponsivePie = ({ onOpen, data, selected = null }) => {
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+  const matchesSmUp = useMediaQuery(theme.breakpoints.up('sm'));
   const [category, setCategory] = useState(selected);
   const [tempCategory, setTempCategory] = useState(null);
 
@@ -32,7 +32,7 @@ const MyResponsivePie = ({ onOpen, data, selected = null }) => {
         borderWidth={1}
         borderColor={{ from: 'color', modifiers: [['darker', 2]] }}
         radialLabelsLinkStrokeWidth={3}
-        radialLabelsLinkOffset={matches ? 20 : 10}
+        radialLabelsLinkOffset={matchesSmUp ? 20 : 10}
         radialLabelsLinkColor={{ from: 'color' }}
         defs={[
           {

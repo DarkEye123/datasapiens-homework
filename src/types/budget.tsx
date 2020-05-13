@@ -38,6 +38,11 @@ export interface Category {
   incomes: Entry[];
 }
 
+export type CreateCategoryInput = {
+  payload: Omit<Category, 'id'>;
+  budgetID: number;
+};
+
 export interface DonutGraphCategory {
   id: string;
   label: string;

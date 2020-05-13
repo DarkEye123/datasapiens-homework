@@ -6,12 +6,17 @@ import {
   fetchBudgets,
 } from './budgetListReducer';
 import { build as buildBudgetReducers, fetchBudget } from './budgetReducer';
+import {
+  build as buildCategoryReducers,
+  createCategory,
+} from './categoryReducers';
 
 export interface State {
   budgets: Pick<Budget, 'id'>[];
   budget: Budget | null;
   loading: boolean;
   errors: AppError[];
+  taskDone: boolean;
 }
 
 const cashflowSlice = createSlice({
@@ -21,14 +26,17 @@ const cashflowSlice = createSlice({
     budget: null,
     loading: false,
     errors: [],
+    taskDone: false,
   } as State,
   reducers: {},
   extraReducers: (builder) => {
     buildBudgetsReducers(builder);
     buildBudgetReducers(builder);
+    buildCategoryReducers(builder);
   },
 });
 
 export { fetchBudgets };
 export { fetchBudget };
+export { createCategory };
 export default cashflowSlice.reducer;
