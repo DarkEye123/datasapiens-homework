@@ -1,5 +1,5 @@
 import 'date-fns';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import {
   Grid,
   useTheme,
@@ -22,7 +22,7 @@ type FormProps = {
 };
 
 export interface CallbackProps {
-  category: Category | string;
+  category: string;
   createRequested: boolean;
 }
 
@@ -41,19 +41,15 @@ const SelectCreateCategory: FC<FormProps & FeatureProps> = ({
         category: defaultCategory,
       }}
       onSubmit={(data, { setSubmitting }) => {
-        let category = data.category;
+        const createRequested = typeof data.category === 'string';
+        let category = createRequested
+          ? ((data.category as unknown) as string)
+          : String(data.category!.id);
         setSubmitting(false);
-        if (typeof data.category === 'string') {
-          onConfirm({
-            category: data.category as string,
-            createRequested: true,
-          });
-        } else {
-          onConfirm({
-            category: category as Category,
-            createRequested: false,
-          });
-        }
+        onConfirm({
+          category,
+          createRequested,
+        });
       }}
       validate={(val) => {
         const errors: Record<string, string> = {};

@@ -7,7 +7,13 @@ import Bar from '../components/Graphs/Bar';
 import Donut from '../components/Graphs/Donut';
 import { Grid, Typography } from '@material-ui/core';
 import { donutDataTransformer, barDataTransformer } from '../utils/graph';
-import { DonutGraphCategory, Category, Entry } from '../types/budget';
+import {
+  DonutGraphCategory,
+  Category,
+  Entry,
+  CreateCategoryPayload,
+  AddEntryToCategoryInputPayload,
+} from '../types/budget';
 import AddButton from '../components/Buttons/Add';
 import Dialog from '../components/Dialog';
 import Stepper, { StepperLabel } from '../components/Stepper';
@@ -15,7 +21,6 @@ import EntryForm from '../components/Forms/CreateEntry';
 import CreateForm, {
   CallbackProps,
 } from '../components/Forms/SelectCreateCategory';
-import { prepareCategoryData } from '../utils/forms';
 
 type StepperInput = {
   activeIndex: number;
@@ -29,6 +34,7 @@ const Budget: FC<BudgetProps> = ({
   loading,
   createCategory,
   taskDone,
+  addEntryToCategory,
 }) => {
   const { id } = useParams();
   const [editedEntry, setEditedEntry] = useState<Partial<Entry>>({});
@@ -60,13 +66,25 @@ const Budget: FC<BudgetProps> = ({
   }
 
   function handleCreateForm({ category, createRequested }: CallbackProps) {
-    const entry = { date: editedEntry.date!, value: editedEntry.value! };
+    const entry = {
+      date: editedEntry.date!,
+      value: Math.abs(editedEntry.value!),
+    };
+    const isExpense = editedEntry.value! < 0;
     if (createRequested) {
-      const payload = prepareCategoryData(category as string, entry);
+      const payload: CreateCategoryPayload = {
+        categoryName: category,
+        entry,
+        type: isExpense ? 'expense' : 'income',
+      };
       createCategory({ budgetID: budget!.id, payload });
     } else {
-      // const payload = prepareCategoryData(category as Category, entry);
-      // updateCategory({ budgetID: budget!.id, payload });
+      const payload: AddEntryToCategoryInputPayload = {
+        entry,
+        type: isExpense ? 'expense' : 'income',
+      };
+      addEntryToCategory({ categoryID: Number(category), payload });
+      handleDialogClose();
     }
   }
 

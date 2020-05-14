@@ -29,7 +29,7 @@ const budgetThunkPayloadCreator: AsyncThunkPayloadCreator<
     for (const entry of entries) {
       const [expenses, incomes] = entry;
       if (expenses.data?.length || incomes.data?.length) {
-        const id = expenses.data
+        const id = expenses.data?.length
           ? expenses.data[0].categoryId
           : incomes.data![0].categoryId;
         const category = categories.find((c) => c.id === id) as Category;

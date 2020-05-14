@@ -9,6 +9,7 @@ import { build as buildBudgetReducers, fetchBudget } from './budgetReducer';
 import {
   build as buildCategoryReducers,
   createCategory,
+  addEntryToCategory,
 } from './categoryReducers';
 
 export interface State {
@@ -36,7 +37,5 @@ const cashflowSlice = createSlice({
   },
 });
 
-export { fetchBudgets };
-export { fetchBudget };
-export { createCategory };
+export { fetchBudgets, fetchBudget, createCategory, addEntryToCategory };
 export default cashflowSlice.reducer;

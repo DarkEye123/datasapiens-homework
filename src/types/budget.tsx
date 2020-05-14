@@ -38,10 +38,26 @@ export interface Category {
   incomes: Entry[];
 }
 
+export interface CreateCategoryPayload extends CategoryInputPayload {
+  categoryName: string;
+}
+
 export type CreateCategoryInput = {
-  payload: Omit<Category, 'id'>;
+  payload: CreateCategoryPayload;
   budgetID: number;
 };
+
+export interface CategoryInputPayload {
+  entry?: Pick<Entry, 'value' | 'date'>;
+  type?: 'income' | 'expense';
+}
+
+export type AddEntryToCategoryInputPayload = CategoryInputPayload;
+
+export interface AddEntryToCategoryInput {
+  payload: CategoryInputPayload;
+  categoryID: number;
+}
 
 export interface DonutGraphCategory {
   id: string;

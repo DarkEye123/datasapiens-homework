@@ -57,7 +57,7 @@ const EntryForm: FC<FormProps> = ({ onConfirm }) => {
         setSubmitting(false);
         onConfirm({ value: Number(value), date });
       }}
-      validate={({ value }) => {
+      validate={({ value, date }) => {
         const errors: Partial<FormValidationValues> = {};
         if (!value) {
           errors.value = 'Required';
@@ -100,7 +100,7 @@ const EntryForm: FC<FormProps> = ({ onConfirm }) => {
                   component={KeyboardDatePicker}
                   disableToolbar
                   variant={isMobile() || !isBigScreen ? 'dialog' : 'inline'}
-                  format="MM/dd/yyyy"
+                  format="yyyy-MM-dd"
                   id="date"
                   name="date"
                   margin="normal"

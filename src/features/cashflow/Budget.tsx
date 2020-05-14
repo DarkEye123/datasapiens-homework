@@ -1,16 +1,25 @@
 import { connect } from 'react-redux';
-import { fetchBudget, createCategory } from './cashflowSlice';
+import {
+  fetchBudget,
+  createCategory,
+  addEntryToCategory,
+} from './cashflowSlice';
 import { RootState } from '..';
-import { CreateCategoryInput } from '../../types/budget';
+import {
+  CreateCategoryInput,
+  AddEntryToCategoryInput,
+} from '../../types/budget';
 
 const mapDispatchToProps = {
   fetchBudget,
   createCategory,
+  addEntryToCategory,
 };
 
 interface DispatchShape {
   fetchBudget: (budgetID: number) => void;
   createCategory: (args: CreateCategoryInput) => void;
+  addEntryToCategory: (args: AddEntryToCategoryInput) => void;
 }
 
 const mapStateToProps = (state: RootState) => ({

@@ -71,7 +71,9 @@ function barDataTransformer({ expenses, incomes }: Category): BarGraphEntry[] {
       entries[id].expenses.push(entry);
     }
   }
-  return Object.values(entries);
+  return Object.values(entries).sort(
+    (x, y) => new Date(x.id).getTime() - new Date(y.id).getTime(),
+  );
 }
 
 function isMobile() {

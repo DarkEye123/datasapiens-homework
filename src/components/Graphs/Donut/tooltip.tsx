@@ -54,7 +54,7 @@ const Tooltip: FC<DonutGraphCategory & { color: string }> = ({
           className={classes.typography}
           gutterBottom
         >
-          to select category double click on graph area
+          to select a category, click on a graph area
         </Typography>
         <Divider></Divider>
         <Typography

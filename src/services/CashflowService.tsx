@@ -5,24 +5,36 @@ import {
   FetchEntriesInput,
   Entry,
   CreateCategoryInput,
+  AddEntryToCategoryInput,
 } from '../types/budget';
 import { client } from './NetworkService';
+import { formatDate } from '../utils/date';
 
-interface BudgetAPIResponse extends APIResponse {
+interface BudgetListAPIResponse extends APIResponse {
   data: Budget[] | null;
 }
 
-interface CategoryAPIResponse extends APIResponse {
-  data: Category[] | Category | null;
+interface CategoryListAPIResponse extends APIResponse {
+  data: Category[] | null;
 }
 
-interface EntryAPIResponse extends APIResponse {
+interface CategoryAPIResponse extends APIResponse {
+  data: Category | null;
+}
+
+interface EntryAPIListResponse extends APIResponse {
   data: Entry[] | null;
 }
 
-export async function getBudgets(userID: number): Promise<BudgetAPIResponse> {
+interface EntryAPIResponse extends APIResponse {
+  data: Entry | null;
+}
+
+export async function getBudgets(
+  userID: number,
+): Promise<BudgetListAPIResponse> {
   try {
-    const response = await client.get<BudgetAPIResponse>(
+    const response = await client.get<BudgetListAPIResponse>(
       `/users/${userID}/budgets`,
     );
     const { data } = response.data;
@@ -36,9 +48,9 @@ export async function getBudgets(userID: number): Promise<BudgetAPIResponse> {
 
 export async function getCategories(
   budgetID: number,
-): Promise<CategoryAPIResponse> {
+): Promise<CategoryListAPIResponse> {
   try {
-    const response = await client.get<CategoryAPIResponse>(
+    const response = await client.get<CategoryListAPIResponse>(
       `/budgets/${budgetID}/categories`,
     );
     const { data } = response.data;
@@ -52,10 +64,10 @@ export async function getCategories(
 
 export async function getExpensesForCategory({
   categoryID,
-}: FetchEntriesInput): Promise<EntryAPIResponse> {
+}: FetchEntriesInput): Promise<EntryAPIListResponse> {
   try {
-    const response = await client.get<EntryAPIResponse>(
-      `/categories/${categoryID}/expenses`,
+    const response = await client.get<EntryAPIListResponse>(
+      `/categories/${categoryID}/expenses?_sort=date`,
     );
     const { data } = response.data;
     return { data, errors: null };
@@ -68,10 +80,10 @@ export async function getExpensesForCategory({
 
 export async function getIncomeForCategory({
   categoryID,
-}: FetchEntriesInput): Promise<EntryAPIResponse> {
+}: FetchEntriesInput): Promise<EntryAPIListResponse> {
   try {
-    const response = await client.get<EntryAPIResponse>(
-      `/categories/${categoryID}/incomes`,
+    const response = await client.get<EntryAPIListResponse>(
+      `/categories/${categoryID}/incomes?_sort=date`,
     );
     const { data } = response.data;
     return { data, errors: null };
@@ -99,16 +111,52 @@ export async function createCategory({
   payload,
 }: CreateCategoryInput): Promise<CategoryAPIResponse> {
   try {
-    const response = await client.post<CategoryAPIResponse>(`/categories/`, {
+    let response = await client.post<CategoryAPIResponse>(`/categories/`, {
       budgetId: budgetID,
-      name: payload.name,
-      expenses: payload.expenses,
-      incomes: payload.incomes,
+      name: payload.categoryName,
     });
-    const { data } = response.data;
-    return { data, errors: null };
+    const category = response.data.data as Category;
+
+    if (payload.entry) {
+      const isExpense = payload.type === 'expense';
+      const type = isExpense ? 'expenses' : 'incomes';
+      const response = await client.post<EntryAPIResponse>(`/${type}/`, {
+        categoryId: category.id,
+        date: formatDate(payload.entry.date),
+        value: payload.entry.value,
+      });
+      const entry = response.data.data as Entry;
+      category.expenses = [];
+      category.incomes = [];
+      if (isExpense) {
+        category.expenses.push(entry);
+      } else category.incomes.push(entry);
+    }
+
+    return { data: category, errors: null };
   } catch (err) {
-    console.log('category err');
+    console.log('category err', err);
+    return { data: null, errors: err };
+    // return makeMediaError(err) || makeNetworkError(err);
+  }
+}
+
+export async function addEntryToCategory({
+  categoryID,
+  payload,
+}: AddEntryToCategoryInput): Promise<EntryAPIResponse> {
+  try {
+    const isExpense = payload.type === 'expense';
+    const type = isExpense ? 'expenses' : 'incomes';
+    const response = await client.post<EntryAPIResponse>(`/${type}/`, {
+      categoryId: categoryID,
+      date: formatDate(payload.entry!.date),
+      value: payload.entry!.value,
+    });
+    const entry = response.data.data as Entry;
+    return { data: entry, errors: null };
+  } catch (err) {
+    console.log('add entry to category err', err);
     return { data: null, errors: err };
     // return makeMediaError(err) || makeNetworkError(err);
   }
