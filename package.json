@@ -28,6 +28,8 @@
   "scripts": {
     "start-fe": "react-scripts start",
     "start-be": "cd db; node server.js",
+    "restart-be": "cd db; cp db_backup.json db.json; node server.js",
+    "reset-db": "cd db; cp db_backup.json db.json;",
     "start": "npm-run-all --parallel start-be start-fe",
     "build": "react-scripts build",
     "test": "react-scripts test",

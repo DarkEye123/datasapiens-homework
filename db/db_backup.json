@@ -1,0 +1,167 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "Matej",
+      "password": "$2y$12$iAd9mZhblZNuyw/jciTDM.XFNgN9e8iaH3ZtbvI3ZXvRfYG4RG5XW"
+    },
+    {
+      "id": 2,
+      "username": "Tomas",
+      "password": "$2y$12$1dtkfDwHtSKjFExvuccUhedICKcjDfI.2e3xj5baXYksgUxstPQFe"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "budgetId": 1,
+      "name": "food"
+    },
+    {
+      "id": 2,
+      "budgetId": 1,
+      "name": "auto"
+    },
+    {
+      "id": 3,
+      "budgetId": 1,
+      "name": "airbnb"
+    },
+    {
+      "id": 4,
+      "budgetId": 2,
+      "name": "food"
+    },
+    {
+      "id": 5,
+      "budgetId": 3,
+      "name": "airbnb"
+    }
+  ],
+  "expenses": [
+    {
+      "id": 1,
+      "categoryId": 1,
+      "date": "2020-05-03",
+      "value": 40.0
+    },
+    {
+      "id": 2,
+      "categoryId": 1,
+      "date": "2020-05-02",
+      "value": 435.0
+    },
+    {
+      "id": 3,
+      "categoryId": 1,
+      "date": "2020-05-01",
+      "value": 500.0
+    },
+    {
+      "id": 4,
+      "categoryId": 2,
+      "date": "2020-05-03",
+      "value": 40000.0
+    },
+    {
+      "id": 5,
+      "categoryId": 2,
+      "date": "2020-04-20",
+      "value": 380000.0
+    },
+    {
+      "id": 6,
+      "categoryId": 3,
+      "date": "2020-05-03",
+      "value": 200.0
+    },
+    {
+      "id": 7,
+      "categoryId": 4,
+      "date": "2020-05-04",
+      "value": 32.0
+    },
+    {
+      "id": 8,
+      "categoryId": 4,
+      "date": "2020-05-03",
+      "value": 4555.0
+    },
+    {
+      "id": 9,
+      "categoryId": 4,
+      "date": "2020-05-02",
+      "value": 550.0
+    },
+    {
+      "id": 10,
+      "categoryId": 5,
+      "date": "2020-05-02",
+      "byUser": 1,
+      "value": 550.0
+    },
+    {
+      "id": 11,
+      "categoryId": 5,
+      "date": "2020-05-03",
+      "byUser": 2,
+      "value": 20.0
+    }
+  ],
+  "incomes": [
+    {
+      "id": 1,
+      "categoryId": 1,
+      "date": "2020-05-06",
+      "value": 4000.0
+    },
+    {
+      "id": 6,
+      "categoryId": 3,
+      "date": "2020-05-01",
+      "value": 2000.0
+    },
+    {
+      "id": 10,
+      "categoryId": 5,
+      "date": "2020-05-02",
+      "byUser": 1,
+      "value": 8500.0
+    },
+    {
+      "id": 11,
+      "categoryId": 5,
+      "date": "2020-05-03",
+      "byUser": 2,
+      "value": 3600.0
+    }
+  ],
+  "budgets": [
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "Matejov Cashflow"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "name": "Tomášov Cashflow"
+    },
+    {
+      "id": 3,
+      "name": "CommonWealth Cashflow"
+    }
+  ],
+  "sharedBudgets": [
+    {
+      "id": 1,
+      "budgetId": 3,
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "budgetId": 3,
+      "userId": 2
+    }
+  ]
+}
