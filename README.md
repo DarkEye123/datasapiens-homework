@@ -1,6 +1,6 @@
 # Datasapiens Frontend Homework
 
-This project runs own faked server with simple DB setup. All actions are persistent, so be aware of that.
+This project runs own faked server with simple DB setup. All actions are persistent, so be aware of that. By default all requests are finished after 650ms to show loading states
 
 By default db runs on [http://localhost:3001/](http://localhost:3001/)
 
