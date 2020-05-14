@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { withRouter } from 'react-router';
 import { PAGES } from '../../routes';
 import { Lang, LangButton, NavBar } from './styles';
+import Logout from '../Logout';
 
 const Header: FC = () => {
   const { t, i18n } = useTranslation();
@@ -27,6 +28,7 @@ const Header: FC = () => {
               {title}
             </NavLink>
           </Button>
+          <Logout className="logout"></Logout>
         </NavBar>
         <Lang>
           <LangButton

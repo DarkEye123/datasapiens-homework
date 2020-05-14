@@ -34,6 +34,10 @@ const NavBar = styled('nav')(({ theme }: { theme: Theme }) => ({
   '& .selected': {
     fontWeight: 'bolder',
   },
+  '& .logout': {
+    color: 'white',
+    margin: '0 0 0 auto',
+  },
 }));
 
 export { LangButton, Lang, NavBar };

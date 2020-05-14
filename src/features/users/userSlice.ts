@@ -36,6 +36,14 @@ const autologinThunkPayloadCreator: AsyncThunkPayloadCreator<User | null> = asyn
   }
 };
 
+const logoutThunkPayloadCreator = async () => {
+  try {
+    await UserService.logout();
+  } catch (e) {
+    return null;
+  }
+};
+
 interface State {
   user: User | null;
   loading: boolean;
@@ -49,11 +57,14 @@ type LoginPayloadAction =
 
 type AutoLoginPayloadAction = ReturnType<typeof autologin.fulfilled>;
 
+type LogoutPayloadAction = ReturnType<typeof logout.fulfilled>;
+
 const loginUser = createAsyncThunk('users/login', loginThunkPayloadCreator);
 const autologin = createAsyncThunk(
   'users/autologin',
   autologinThunkPayloadCreator,
 );
+const logout = createAsyncThunk('users/logout', logoutThunkPayloadCreator);
 
 const loginFulfilled: CaseReducer<State, LoginPayloadAction> = (
   state,
@@ -91,6 +102,12 @@ const autologinRejected: CaseReducer<State> = (state) => {
   state.autologinDone = true;
 };
 
+const logoutPending: CaseReducer<State> = (state) => {
+  state.user = null;
+  state.loading = false;
+  state.errors = [];
+};
+
 const userSlice = createSlice({
   name: 'users',
   initialState: {
@@ -107,8 +124,9 @@ const userSlice = createSlice({
     builder.addCase(autologin.fulfilled, autologinFulfilled);
     builder.addCase(autologin.pending, autologinPending);
     builder.addCase(autologin.rejected, autologinRejected);
+    builder.addCase(logout.pending, logoutPending);
   },
 });
 
-export { loginUser, autologin };
+export { loginUser, autologin, logout };
 export default userSlice.reducer;
