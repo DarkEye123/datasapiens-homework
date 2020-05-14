@@ -13,9 +13,9 @@ import {
 import { AppError } from '../../types/errors';
 import * as CashflowService from '../../services/CashflowService';
 import { State } from './cashflowSlice';
-import { formatDate } from '../../utils/date';
+// import { formatDate } from '../../utils/date';
 
-const OPTIMISTIC_EID = -1;
+// const OPTIMISTIC_EID = -1;
 
 const createCategoryThunkPayloadCreator: AsyncThunkPayloadCreator<
   Category | AppError[],

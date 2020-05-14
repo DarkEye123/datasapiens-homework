@@ -61,7 +61,6 @@ const Home: FC<BudgetsProps> = ({
   function handleDelete() {
     setOpenDelete(false);
     budgetForDelete && deleteBudget(budgetForDelete);
-    // console.log('deleting', budgetForDelete);
   }
 
   return (
