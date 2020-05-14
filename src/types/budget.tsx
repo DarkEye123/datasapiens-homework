@@ -5,6 +5,8 @@ type Filter = {
 
 export interface Budget {
   id: number;
+  isShared: boolean;
+  name: string;
   categories: Category[];
 }
 
@@ -17,6 +19,7 @@ export interface Entry {
   categoryId: number;
   date: Date;
   value: number;
+  byUser?: number;
 }
 
 export interface BarGraphEntry {

@@ -34,11 +34,30 @@ export async function getBudgets(
   userID: number,
 ): Promise<BudgetListAPIResponse> {
   try {
-    const response = await client.get<BudgetListAPIResponse>(
+    const normalBudgetsResponse = await client.get<BudgetListAPIResponse>(
       `/users/${userID}/budgets`,
     );
-    const { data } = response.data;
-    return { data, errors: null };
+    const { data: budgets } = normalBudgetsResponse.data;
+    const sharedBudgetsResponse = await client.get<BudgetListAPIResponse>(
+      `/users/${userID}/sharedBudgets`,
+    );
+    const { data: sharedBudgets } = sharedBudgetsResponse.data;
+    const sharedPromises = await Promise.all(
+      sharedBudgets!.map((b) =>
+        client.get<BudgetListAPIResponse>(`/budgets/${(b as any).budgetId}`),
+      ),
+    );
+
+    let sharedBudgetList = sharedPromises.flatMap(
+      (element) => element.data.data || [],
+    );
+    sharedBudgetList = sharedBudgetList.map((budget) => ({
+      ...budget,
+      isShared: true,
+    }));
+
+    const combined = budgets?.concat(sharedBudgetList);
+    return { data: combined!, errors: null };
   } catch (err) {
     console.log('budget err');
     return { data: null, errors: err };

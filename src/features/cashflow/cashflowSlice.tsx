@@ -13,7 +13,7 @@ import {
 } from './categoryReducers';
 
 export interface State {
-  budgets: Pick<Budget, 'id'>[];
+  budgets: Omit<Budget, 'categories'>[];
   budget: Budget | null;
   loading: boolean;
   errors: AppError[];
