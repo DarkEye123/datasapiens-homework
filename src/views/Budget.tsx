@@ -5,7 +5,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import BudgetFeature, { BudgetProps } from '../features/cashflow/Budget';
 import Bar from '../components/Graphs/Bar';
 import Donut from '../components/Graphs/Donut';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Box } from '@material-ui/core';
 import { donutDataTransformer, barDataTransformer } from '../utils/graph';
 import {
   DonutGraphCategory,
@@ -147,9 +147,17 @@ const Budget: FC<BudgetProps> = ({
         </Dialog>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography variant="h2">
-              You have {budget.categories.length} categories
-            </Typography>
+            <Box
+              mt={6}
+              display="flex"
+              flexDirection="column"
+              alignItems="flex-end"
+            >
+              <Typography variant="h4" component="h1">
+                You have {budget.categories.length} categories
+              </Typography>
+              {currentCategory && `showing category: ${currentCategory.name}`}
+            </Box>
           </Grid>
           {currentCategory && (
             <>
