@@ -24,6 +24,7 @@ const Home: FC<BudgetsProps> = ({
   budgets,
   loading,
   createBudget,
+  deleteBudget,
 }) => {
   useEffect(() => {
     fetchBudgets(user!.id);
@@ -59,7 +60,8 @@ const Home: FC<BudgetsProps> = ({
 
   function handleDelete() {
     setOpenDelete(false);
-    console.log('deleting', budgetForDelete);
+    budgetForDelete && deleteBudget(budgetForDelete);
+    // console.log('deleting', budgetForDelete);
   }
 
   return (

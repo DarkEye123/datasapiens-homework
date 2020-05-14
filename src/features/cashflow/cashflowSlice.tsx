@@ -9,6 +9,7 @@ import {
   build as buildBudgetReducers,
   fetchBudget,
   createBudget,
+  deleteBudget,
 } from './budgetReducer';
 import {
   build as buildCategoryReducers,
@@ -47,5 +48,6 @@ export {
   createCategory,
   addEntryToCategory,
   createBudget,
+  deleteBudget,
 };
 export default cashflowSlice.reducer;

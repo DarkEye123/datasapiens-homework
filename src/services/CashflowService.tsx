@@ -218,3 +218,8 @@ export async function addEntryToCategory({
     // return makeAppError(err) || makeNetworkError(err);
   }
 }
+
+// This of course can throw error etc .. just no time for that
+export async function deleteBudget(id: number): Promise<void> {
+  await client.delete(`/budgets/${id}`);
+}

@@ -63,6 +63,21 @@ const createBudgetThunkPayloadCreator: AsyncThunkPayloadCreator<
   }
 };
 
+const deleteBudgetThunkPayloadCreator: AsyncThunkPayloadCreator<
+  void | AppError[],
+  number
+> = async (args, { rejectWithValue }) => {
+  try {
+    await CashflowService.deleteBudget(args);
+  } catch (e) {
+    console.log(e);
+    if (!e.response) {
+      throw e;
+    }
+    return rejectWithValue(e.response.errors as AppError[]);
+  }
+};
+
 type FetchBudgetPayloadAction =
   | ReturnType<typeof fetchBudget.fulfilled>
   | ReturnType<typeof fetchBudget.rejected>;
@@ -70,6 +85,8 @@ type FetchBudgetPayloadAction =
 type CreateBudgetPayloadAction =
   | ReturnType<typeof createBudget.fulfilled>
   | ReturnType<typeof createBudget.rejected>;
+
+type DeleteBudgetPayloadAction = ReturnType<typeof deleteBudget.pending>;
 
 const fetchBudget = createAsyncThunk(
   'cashflow/fetchBudget',
@@ -79,6 +96,11 @@ const fetchBudget = createAsyncThunk(
 const createBudget = createAsyncThunk(
   'cashflow/createBudget',
   createBudgetThunkPayloadCreator,
+);
+
+const deleteBudget = createAsyncThunk(
+  'cashflow/deleteBudget',
+  deleteBudgetThunkPayloadCreator,
 );
 
 const budgetFulfilled: CaseReducer<State, FetchBudgetPayloadAction> = (
@@ -111,11 +133,19 @@ const createBudgetFulfilled: CaseReducer<State, CreateBudgetPayloadAction> = (
   state.budgets.push(action.payload as Budget);
 };
 
+const deleteBudgetPending: CaseReducer<State, DeleteBudgetPayloadAction> = (
+  state,
+  action,
+) => {
+  state.budgets = state.budgets.filter((b) => b.id !== action.meta.arg);
+};
+
 const build = (builder: ActionReducerMapBuilder<State>) => {
   builder.addCase(fetchBudget.fulfilled, budgetFulfilled);
   builder.addCase(fetchBudget.pending, budgetPending);
   builder.addCase(fetchBudget.rejected, budgetRejected);
   builder.addCase(createBudget.fulfilled, createBudgetFulfilled);
+  builder.addCase(deleteBudget.pending, deleteBudgetPending);
 };
 
-export { fetchBudget, createBudget, build };
+export { fetchBudget, createBudget, deleteBudget, build };

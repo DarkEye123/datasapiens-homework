@@ -1,16 +1,18 @@
 import { connect } from 'react-redux';
-import { fetchBudgets, createBudget } from './cashflowSlice';
+import { fetchBudgets, createBudget, deleteBudget } from './cashflowSlice';
 import { RootState } from '..';
 import { CreateBudgetInput } from '../../types/budget';
 
 const mapDispatchToProps = {
   fetchBudgets,
   createBudget,
+  deleteBudget,
 };
 
 interface DispatchShape {
   fetchBudgets: (userID: number) => void;
   createBudget: (args: CreateBudgetInput) => void;
+  deleteBudget: (id: number) => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
