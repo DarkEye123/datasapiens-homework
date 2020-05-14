@@ -22,7 +22,7 @@ interface CategoryAPIResponse extends APIResponse {
   data: Category | null;
 }
 
-interface EntryAPIListResponse extends APIResponse {
+interface EntryListAPIResponse extends APIResponse {
   data: Entry[] | null;
 }
 
@@ -83,9 +83,9 @@ export async function getCategories(
 
 export async function getExpensesForCategory({
   categoryID,
-}: FetchEntriesInput): Promise<EntryAPIListResponse> {
+}: FetchEntriesInput): Promise<EntryListAPIResponse> {
   try {
-    const response = await client.get<EntryAPIListResponse>(
+    const response = await client.get<EntryListAPIResponse>(
       `/categories/${categoryID}/expenses?_sort=date`,
     );
     const { data } = response.data;
@@ -99,9 +99,9 @@ export async function getExpensesForCategory({
 
 export async function getIncomeForCategory({
   categoryID,
-}: FetchEntriesInput): Promise<EntryAPIListResponse> {
+}: FetchEntriesInput): Promise<EntryListAPIResponse> {
   try {
-    const response = await client.get<EntryAPIListResponse>(
+    const response = await client.get<EntryListAPIResponse>(
       `/categories/${categoryID}/incomes?_sort=date`,
     );
     const { data } = response.data;

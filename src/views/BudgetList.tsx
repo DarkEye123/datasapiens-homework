@@ -15,6 +15,7 @@ import BudgetListFeature, {
 import { PAGES } from '../routes';
 import BudgetListItem from '../components/BudgetListItem';
 import Dialog from '../components/Dialog';
+import CreateBudget from '../components/Forms/CreateBudget';
 
 const Home: FC<BudgetsProps> = ({ fetchBudgets, user, budgets, loading }) => {
   useEffect(() => {
@@ -39,11 +40,14 @@ const Home: FC<BudgetsProps> = ({ fetchBudgets, user, budgets, loading }) => {
 
   return (
     <>
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        title="Create Budget"
-      ></Dialog>
+      <Dialog open={open} onClose={() => setOpen(false)} title="Create Budget">
+        {user && (
+          <CreateBudget
+            onConfirm={(data) => console.log('data', data)}
+            userID={user.id}
+          ></CreateBudget>
+        )}
+      </Dialog>
       <Box mt={12}>
         <Grid container>
           <Grid item container xs={12}>
