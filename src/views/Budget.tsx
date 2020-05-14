@@ -33,7 +33,6 @@ const Budget: FC<BudgetProps> = ({
   fetchBudget,
   loading,
   createCategory,
-  taskDone,
   addEntryToCategory,
 }) => {
   const { id } = useParams();
@@ -102,13 +101,12 @@ const Budget: FC<BudgetProps> = ({
     if (budget) {
       setCurrentCategory(budget.categories[0]);
     }
-  }, [budget]);
-  useEffect(() => {
-    if (taskDone) {
-      handleDialogClose();
-    }
+    handleDialogClose();
+    return () => {
+      setCurrentCategory(null);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [taskDone]);
+  }, [budget]);
 
   if (loading && !dialogOpen) {
     return (
@@ -140,7 +138,7 @@ const Budget: FC<BudgetProps> = ({
             ></Stepper>
           }
         >
-          {currentCategory &&
+          {budget &&
             steps.forms[steps.activeIndex]({
               onConfirm: handlers[steps.activeIndex],
               currentCategory,

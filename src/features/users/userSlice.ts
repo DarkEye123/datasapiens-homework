@@ -57,8 +57,6 @@ type LoginPayloadAction =
 
 type AutoLoginPayloadAction = ReturnType<typeof autologin.fulfilled>;
 
-type LogoutPayloadAction = ReturnType<typeof logout.fulfilled>;
-
 const loginUser = createAsyncThunk('users/login', loginThunkPayloadCreator);
 const autologin = createAsyncThunk(
   'users/autologin',

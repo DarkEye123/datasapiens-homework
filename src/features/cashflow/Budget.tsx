@@ -26,7 +26,6 @@ const mapStateToProps = (state: RootState) => ({
   budget: state.cashflow.budget,
   loading: state.cashflow.loading,
   user: state.users.user,
-  taskDone: state.cashflow.taskDone,
 });
 
 export type BudgetProps = ReturnType<typeof mapStateToProps> & DispatchShape;

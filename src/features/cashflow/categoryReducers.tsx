@@ -72,21 +72,20 @@ const addEntryToCategory = createAsyncThunk(
   addEntryToCategoryThunkPayloadCreator,
 );
 
-const categoryFulfilled: CaseReducer<State, CreateCategoryPayloadAction> = (
-  state,
-  action,
-) => {
-  const length = state.budget!.categories.length;
-  state.budget!.categories[length - 1] = action.payload as Category;
+const createCategoryFulfilled: CaseReducer<
+  State,
+  CreateCategoryPayloadAction
+> = (state, action) => {
+  state.budget!.categories.push(action.payload as Category);
   state.loading = false;
   state.taskDone = true;
 };
 
-const categoryPending: CaseReducer<State> = (state) => {
+const createCategoryPending: CaseReducer<State> = (state) => {
   state.loading = true;
 };
 
-const categoryRejected: CaseReducer<State> = (state, action) => {
+const createCategoryRejected: CaseReducer<State> = (state, action) => {
   state.loading = false;
   state.taskDone = true;
   state.errors.concat(action.payload as AppError[]);
@@ -141,9 +140,9 @@ const addEntryToCategoryRejected: CaseReducer<
 };
 
 const build = (builder: ActionReducerMapBuilder<State>) => {
-  builder.addCase(createCategory.fulfilled, categoryFulfilled);
-  builder.addCase(createCategory.pending, categoryPending);
-  builder.addCase(createCategory.rejected, categoryRejected);
+  builder.addCase(createCategory.fulfilled, createCategoryFulfilled);
+  builder.addCase(createCategory.pending, createCategoryPending);
+  builder.addCase(createCategory.rejected, createCategoryRejected);
   builder.addCase(addEntryToCategory.fulfilled, addEntryToCategoryFulfilled);
   builder.addCase(addEntryToCategory.pending, addEntryToCategoryPending);
   builder.addCase(addEntryToCategory.rejected, addEntryToCategoryRejected);

@@ -41,14 +41,23 @@ const SelectCreateCategory: FC<FormProps & FeatureProps> = ({
         category: defaultCategory,
       }}
       onSubmit={(data, { setSubmitting }) => {
-        const createRequested = typeof data.category === 'string';
-        let category = createRequested
+        let verificationNeeded = typeof data.category === 'string';
+        let category = verificationNeeded
           ? ((data.category as unknown) as string)
           : String(data.category!.id);
+
+        const existingCategory = categories.find((c) => c.name === category);
+        const isReallyNew = verificationNeeded && !existingCategory;
+
+        let id = category;
+        if (existingCategory) {
+          id = String(existingCategory?.id);
+        }
+
         setSubmitting(false);
         onConfirm({
-          category,
-          createRequested,
+          category: isReallyNew ? category : id,
+          createRequested: isReallyNew,
         });
       }}
       validate={(val) => {
