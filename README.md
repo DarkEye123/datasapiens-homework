@@ -1,44 +1,77 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Datasapiens Frontend Homework
 
-## Available Scripts
+This project runs own faked server with simple DB setup. All actions are persistent, so be aware of that.
 
-In the project directory, you can run:
+By default db runs on [http://localhost:3001/](http://localhost:3001/)
 
-### `yarn start`
+React App [http://localhost:3000/](http://localhost:3000/)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Used stack
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Redux with RTK, Typescript, [Material-UI](https://material-ui.com/), [Json Server](https://github.com/typicode/json-server) with _home-made_ Auth, [Nivo](https://nivo.rocks/) for graphs, [i18n-react](https://github.com/alexdrel/i18n-react#readme) for translations.
 
-### `yarn test`
+I planned to use [rollbar](http://rollbar.com) for error tracking, but I did not have time for the setup at the end.
+Cypress and Jest were included, but not used :( ...
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Functionality
 
-### `yarn build`
+App has Login + Autologin support backed by adjusted JSON Server. BE part verify if user is logged to do actions via FE. FE has simple Route Guard mechanisms.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Users can create budgets, share them (during creation) and delete them. After budget selection, the user is redirected to a category page. Page has an interactive donut graph.
+_Choosing_ a category from the _donut graph_ will reflect on a _bar graph_. The donut graph shows sum of entries for given category. The bar graph shows **sums** of Incomes/Expenses for given date _with_ total entry count information per date in a tooltip.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+**User** **can** create new Entry(Expense, Income -- determined by their nominal value) and select or create Category.
+All selections provide autocomplete for already present data. Category selection is used for its creation if category is not present yet.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## What about errors?
 
-### `yarn eject`
+FE part in current state does not reflect errors from BE (time reasons) - but impl via snackbars subscribed to redux should be quite trivial. App Design though differentiate between network errors and App errors separately
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Warnings ??
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Yes, U will see a bunch of warnings (end error too!) during compilation. From what I found out they are caused by [Material-UI](https://material-ui.com/)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## How to Log In???
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+users with passwords:
 
-## Learn More
+| User  | Password    |
+| ----- | ----------- |
+| Matej | abeceda     |
+| Tomas | datasapiens |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Project setup
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+npm install
+```
+
+### Run whole project simultaneously
+
+```
+npm start
+```
+
+### Compiles and run DB server
+
+```
+npm run start-be
+```
+
+### Compiles and run FE
+
+```
+npm run start-fe
+```
+
+### To reset DB **don't forget to restart**
+
+```
+npm run reset-db
+```
+
+or if you are running commands separately just kill BE and type
+
+```
+npm run restart-be
+```
