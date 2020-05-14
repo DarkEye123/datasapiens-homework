@@ -4,12 +4,12 @@ import {
   CaseReducer,
   ActionReducerMapBuilder,
 } from '@reduxjs/toolkit';
-import { Category, Budget } from '../../types/budget';
+import { Category, Budget, CreateBudgetInput } from '../../types/budget';
 import { AppError } from '../../types/errors';
 import * as CashflowService from '../../services/CashflowService';
 import { State } from './cashflowSlice';
 
-const budgetThunkPayloadCreator: AsyncThunkPayloadCreator<
+const fetchBudgetThunkPayloadCreator: AsyncThunkPayloadCreator<
   Category[] | AppError[],
   number
 > = async (args, { rejectWithValue }) => {
@@ -47,16 +47,41 @@ const budgetThunkPayloadCreator: AsyncThunkPayloadCreator<
   }
 };
 
-type BudgetPayloadAction =
+const createBudgetThunkPayloadCreator: AsyncThunkPayloadCreator<
+  Budget | AppError[],
+  CreateBudgetInput
+> = async (args, { rejectWithValue }) => {
+  try {
+    const response = await CashflowService.createBudget(args);
+    return response.data as Budget;
+  } catch (e) {
+    console.log(e);
+    if (!e.response) {
+      throw e;
+    }
+    return rejectWithValue(e.response.errors as AppError[]);
+  }
+};
+
+type FetchBudgetPayloadAction =
   | ReturnType<typeof fetchBudget.fulfilled>
   | ReturnType<typeof fetchBudget.rejected>;
 
+type CreateBudgetPayloadAction =
+  | ReturnType<typeof createBudget.fulfilled>
+  | ReturnType<typeof createBudget.rejected>;
+
 const fetchBudget = createAsyncThunk(
   'cashflow/fetchBudget',
-  budgetThunkPayloadCreator,
+  fetchBudgetThunkPayloadCreator,
 );
 
-const budgetFulfilled: CaseReducer<State, BudgetPayloadAction> = (
+const createBudget = createAsyncThunk(
+  'cashflow/createBudget',
+  createBudgetThunkPayloadCreator,
+);
+
+const budgetFulfilled: CaseReducer<State, FetchBudgetPayloadAction> = (
   state,
   action,
 ) => {
@@ -71,7 +96,7 @@ const budgetPending: CaseReducer<State> = (state) => {
   state.loading = true;
 };
 
-const budgetRejected: CaseReducer<State, BudgetPayloadAction> = (
+const budgetRejected: CaseReducer<State, FetchBudgetPayloadAction> = (
   state,
   action,
 ) => {
@@ -79,10 +104,18 @@ const budgetRejected: CaseReducer<State, BudgetPayloadAction> = (
   state.errors.concat(action.payload as AppError[]);
 };
 
+const createBudgetFulfilled: CaseReducer<State, CreateBudgetPayloadAction> = (
+  state,
+  action,
+) => {
+  state.budgets.push(action.payload as Budget);
+};
+
 const build = (builder: ActionReducerMapBuilder<State>) => {
   builder.addCase(fetchBudget.fulfilled, budgetFulfilled);
   builder.addCase(fetchBudget.pending, budgetPending);
   builder.addCase(fetchBudget.rejected, budgetRejected);
+  builder.addCase(createBudget.fulfilled, createBudgetFulfilled);
 };
 
-export { fetchBudget, build };
+export { fetchBudget, createBudget, build };

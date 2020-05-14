@@ -5,7 +5,11 @@ import {
   build as buildBudgetsReducers,
   fetchBudgets,
 } from './budgetListReducer';
-import { build as buildBudgetReducers, fetchBudget } from './budgetReducer';
+import {
+  build as buildBudgetReducers,
+  fetchBudget,
+  createBudget,
+} from './budgetReducer';
 import {
   build as buildCategoryReducers,
   createCategory,
@@ -37,5 +41,11 @@ const cashflowSlice = createSlice({
   },
 });
 
-export { fetchBudgets, fetchBudget, createCategory, addEntryToCategory };
+export {
+  fetchBudgets,
+  fetchBudget,
+  createCategory,
+  addEntryToCategory,
+  createBudget,
+};
 export default cashflowSlice.reducer;

@@ -17,11 +17,21 @@ import BudgetListItem from '../components/BudgetListItem';
 import Dialog from '../components/Dialog';
 import CreateBudget from '../components/Forms/CreateBudget';
 
-const Home: FC<BudgetsProps> = ({ fetchBudgets, user, budgets, loading }) => {
+const Home: FC<BudgetsProps> = ({
+  fetchBudgets,
+  user,
+  budgets,
+  loading,
+  createBudget,
+}) => {
   useEffect(() => {
     fetchBudgets(user!.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [budgets]);
 
   const history = useHistory();
   const [open, setOpen] = useState(false);
@@ -43,7 +53,13 @@ const Home: FC<BudgetsProps> = ({ fetchBudgets, user, budgets, loading }) => {
       <Dialog open={open} onClose={() => setOpen(false)} title="Create Budget">
         {user && (
           <CreateBudget
-            onConfirm={(data) => console.log('data', data)}
+            onConfirm={({ budgetName, userID }) =>
+              createBudget({
+                budgetName,
+                userList: userID ? [userID] : [],
+                owner: user.id,
+              })
+            }
             userID={user.id}
           ></CreateBudget>
         )}

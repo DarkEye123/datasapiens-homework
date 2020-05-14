@@ -6,12 +6,17 @@ import {
   Entry,
   CreateCategoryInput,
   AddEntryToCategoryInput,
+  CreateBudgetInput,
 } from '../types/budget';
 import { client } from './NetworkService';
 import { formatDate } from '../utils/date';
 
 interface BudgetListAPIResponse extends APIResponse {
   data: Budget[] | null;
+}
+
+interface BudgetAPIResponse extends APIResponse {
+  data: Budget | null;
 }
 
 interface CategoryListAPIResponse extends APIResponse {
@@ -61,7 +66,40 @@ export async function getBudgets(
   } catch (err) {
     console.log('budget err');
     return { data: null, errors: err };
-    // return makeMediaError(err) || makeNetworkError(err);
+    // return makeAppError(err) || makeNetworkError(err);
+  }
+}
+
+export async function createBudget(
+  args: CreateBudgetInput,
+): Promise<BudgetAPIResponse> {
+  try {
+    const isShared = args.userList.length >= 1;
+
+    const payload: any = {
+      name: args.budgetName,
+    };
+
+    if (!isShared) {
+      payload.userId = args.owner;
+    }
+
+    const response = await client.post<BudgetAPIResponse>('/budgets', payload);
+    const budget = response.data.data;
+    budget!.isShared = isShared;
+    if (isShared) {
+      args.userList.push(args.owner);
+      args.userList.forEach((userID) => {
+        client.post('/sharedBudgets', {
+          budgetId: budget?.id,
+          userId: userID,
+        });
+      });
+    }
+    return { data: budget, errors: null };
+  } catch (err) {
+    console.log(err);
+    return { data: null, errors: err };
   }
 }
 
@@ -77,7 +115,7 @@ export async function getCategories(
   } catch (err) {
     console.log('category err');
     return { data: null, errors: err };
-    // return makeMediaError(err) || makeNetworkError(err);
+    // return makeAppError(err) || makeNetworkError(err);
   }
 }
 
@@ -93,7 +131,7 @@ export async function getExpensesForCategory({
   } catch (err) {
     console.log('expenses err');
     return { data: null, errors: err };
-    // return makeMediaError(err) || makeNetworkError(err);
+    // return makeAppError(err) || makeNetworkError(err);
   }
 }
 
@@ -109,7 +147,7 @@ export async function getIncomeForCategory({
   } catch (err) {
     console.log('incomes err');
     return { data: null, errors: err };
-    // return makeMediaError(err) || makeNetworkError(err);
+    // return makeAppError(err) || makeNetworkError(err);
   }
 }
 
@@ -156,7 +194,7 @@ export async function createCategory({
   } catch (err) {
     console.log('category err', err);
     return { data: null, errors: err };
-    // return makeMediaError(err) || makeNetworkError(err);
+    // return makeAppError(err) || makeNetworkError(err);
   }
 }
 
@@ -177,6 +215,6 @@ export async function addEntryToCategory({
   } catch (err) {
     console.log('add entry to category err', err);
     return { data: null, errors: err };
-    // return makeMediaError(err) || makeNetworkError(err);
+    // return makeAppError(err) || makeNetworkError(err);
   }
 }

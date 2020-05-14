@@ -65,11 +65,12 @@ const CreateBudget: FC<FormProps> = ({ onConfirm, userID }) => {
     <Formik
       initialValues={{
         budgetName: '',
-        userID: undefined,
+        user: undefined,
       }}
-      onSubmit={({ budgetName, userID }, { setSubmitting }) => {
+      onSubmit={({ budgetName, user }, { setSubmitting }) => {
         setSubmitting(false);
         setLoading(true);
+        const userID = user && (user as any).id ? (user as any).id : null;
         onConfirm({
           budgetName,
           userID,
@@ -105,8 +106,8 @@ const CreateBudget: FC<FormProps> = ({ onConfirm, userID }) => {
             <Grid item xs={12} sm="auto">
               <Field
                 component={CreatableInput}
-                id="userID"
-                name="userID"
+                id="user"
+                name="user"
                 label={
                   loadingUsers ? 'loading users...' : 'select user to share'
                 }

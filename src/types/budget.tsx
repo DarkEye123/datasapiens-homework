@@ -10,6 +10,12 @@ export interface Budget {
   categories: Category[];
 }
 
+export interface CreateBudgetInput {
+  budgetName: string;
+  userList: number[];
+  owner: number;
+}
+
 export interface FetchEntriesInput {
   categoryID: number;
 }
