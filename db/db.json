@@ -7,7 +7,7 @@
     },
     {
       "id": 2,
-      "username": "Peter",
+      "username": "Tomas",
       "password": "$2y$12$1dtkfDwHtSKjFExvuccUhedICKcjDfI.2e3xj5baXYksgUxstPQFe"
     }
   ],
@@ -139,14 +139,17 @@
   "budgets": [
     {
       "id": 1,
-      "userId": 1
+      "userId": 1,
+      "name": "Matejov Cashflow"
     },
     {
       "id": 2,
-      "userId": 2
+      "userId": 2,
+      "name": "Tomášov Cashflow"
     },
     {
-      "id": 3
+      "id": 3,
+      "name": "CommonWealth Cashflow"
     }
   ],
   "sharedBudgets": [
