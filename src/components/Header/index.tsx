@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import { AppBar, Toolbar, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Button, IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 import { useTranslation } from 'react-i18next';
 import { withRouter } from 'react-router';
 import { PAGES } from '../../routes';
@@ -18,7 +19,10 @@ const Header: FC = () => {
     <AppBar position="sticky">
       <Toolbar>
         <NavBar>
-          <Button variant="outlined">
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
+          <Button variant="outlined" className="padded">
             <NavLink exact activeClassName="selected" to={PAGES.home.name}>
               {title}
             </NavLink>

@@ -19,7 +19,7 @@ const LangButton = styled(({ active, ...others }: OmitProps & ButtonProps) => (
   color: active ? theme.palette.primary.main : 'grey',
 }));
 
-const NavBar = styled('nav')({
+const NavBar = styled('nav')(({ theme }: { theme: Theme }) => ({
   flexGrow: 1,
   display: 'flex',
   '& a': {
@@ -28,14 +28,12 @@ const NavBar = styled('nav')({
     color: 'white',
     textDecoration: 'none',
   },
-  '& h1': {
-    flexGrow: 1,
-    fontSize: '4rem',
-    textTransform: 'uppercase',
+  '& .padded': {
+    marginLeft: theme.spacing(2),
   },
   '& .selected': {
     fontWeight: 'bolder',
   },
-});
+}));
 
 export { LangButton, Lang, NavBar };
