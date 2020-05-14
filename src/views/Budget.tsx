@@ -110,9 +110,6 @@ const Budget: FC<BudgetProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskDone]);
 
-  // console.log('LOADING', loading);
-  // console.log('otvoreny', dialogOpen && !taskDone);
-
   if (loading && !dialogOpen) {
     return (
       <div>
@@ -128,9 +125,6 @@ const Budget: FC<BudgetProps> = ({
       </div>
     );
   }
-
-  // console.log('B', steps);
-  // console.log('B', steps.forms[steps.activeIndex]);
 
   if (budget) {
     return (

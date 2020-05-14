@@ -5,7 +5,6 @@ const dtf = new Intl.DateTimeFormat('cs', {
 });
 
 function formatDate(d: Date): string {
-  console.log(d);
   const [
     { value: day },
     ,

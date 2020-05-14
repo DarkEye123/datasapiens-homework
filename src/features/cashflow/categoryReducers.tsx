@@ -96,11 +96,9 @@ const addEntryToCategoryFulfilled: CaseReducer<
   State,
   AddEntryToCategoryPayloadAction
 > = (state, action) => {
-  console.log('fulfilled', action);
   const id = action.meta.arg.categoryID;
   const isExpense = action.meta.arg.payload.type === 'expense';
   const index = state.budget!.categories.findIndex((c) => c.id === id);
-  console.log(action.payload);
   if (isExpense) {
     state.budget!.categories[index].expenses.push(action.payload as Entry);
   } else {

@@ -73,7 +73,6 @@ const Login: FC<LoginProps & RouteProps> = ({
             if (!password) {
               errors.password = 'Required';
             }
-            console.log(errors);
             return errors;
           }}
         >
