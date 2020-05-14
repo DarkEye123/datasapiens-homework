@@ -154,10 +154,12 @@
   ],
   "sharedBudgets": [
     {
+      "id": 1,
       "budgetId": 3,
       "userId": 1
     },
     {
+      "id": 2,
       "budgetId": 3,
       "userId": 2
     }
