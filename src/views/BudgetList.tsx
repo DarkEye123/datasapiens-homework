@@ -16,6 +16,7 @@ import { PAGES } from '../routes';
 import BudgetListItem from '../components/BudgetListItem';
 import Dialog from '../components/Dialog';
 import CreateBudget from '../components/Forms/CreateBudget';
+import { useTranslation } from 'react-i18next';
 
 const Home: FC<BudgetsProps> = ({
   fetchBudgets,
@@ -30,11 +31,14 @@ const Home: FC<BudgetsProps> = ({
   }, [user]);
 
   useEffect(() => {
-    setOpen(false);
+    setCreateOpen(false);
   }, [budgets]);
 
+  const { t } = useTranslation();
   const history = useHistory();
-  const [open, setOpen] = useState(false);
+  const [openCreate, setCreateOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [budgetForDelete, setBudgetForDelete] = useState<number | null>(null);
 
   if (loading) {
     return (
@@ -48,9 +52,23 @@ const Home: FC<BudgetsProps> = ({
     history.push(`${PAGES.budget.name}/${id}`);
   }
 
+  function handleRequestDelete(id: number) {
+    setBudgetForDelete(id);
+    setOpenDelete(true);
+  }
+
+  function handleDelete() {
+    setOpenDelete(false);
+    console.log('deleting', budgetForDelete);
+  }
+
   return (
     <>
-      <Dialog open={open} onClose={() => setOpen(false)} title="Create Budget">
+      <Dialog
+        open={openCreate}
+        onClose={() => setCreateOpen(false)}
+        title="Create Budget"
+      >
         {user && (
           <CreateBudget
             onConfirm={({ budgetName, userID }) =>
@@ -64,6 +82,14 @@ const Home: FC<BudgetsProps> = ({
           ></CreateBudget>
         )}
       </Dialog>
+      <Dialog
+        open={openDelete}
+        onClose={() => setOpenDelete(false)}
+        onConfirm={handleDelete}
+        title="Delete Budget"
+      >
+        {t('Are you sure?')}
+      </Dialog>
       <Box mt={12}>
         <Grid container>
           <Grid item container xs={12}>
@@ -74,17 +100,17 @@ const Home: FC<BudgetsProps> = ({
                 color="textPrimary"
                 gutterBottom
               >
-                Your Budgets
+                {t('Your Budgets')}
               </Typography>
             </Grid>
             <Grid item xs container justify="flex-end">
               <Grid item>
                 <Button
                   color="primary"
-                  onClick={() => setOpen(true)}
+                  onClick={() => setCreateOpen(true)}
                   variant="outlined"
                 >
-                  Create Budget
+                  {t('Create Budget')}
                 </Button>
               </Grid>
             </Grid>
@@ -97,6 +123,7 @@ const Home: FC<BudgetsProps> = ({
                     key={b.id}
                     name={b.name}
                     isShared={b.isShared}
+                    onAction={() => handleRequestDelete(b.id)}
                     onOpen={() => handleOpenBudget(b.id)}
                   ></BudgetListItem>
                 ))}

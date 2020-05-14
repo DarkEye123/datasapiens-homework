@@ -34,13 +34,15 @@ type Props = {
   title: React.ReactNode;
   children?: React.ReactNode;
   onClose: () => void;
+  onConfirm?: () => void;
 };
 
-export default function DialogStepper({
+export default function SimpleDialog({
   open,
   title,
   children,
   onClose,
+  onConfirm,
 }: Props) {
   const classes = useStyles();
   const theme = useTheme();
@@ -65,6 +67,11 @@ export default function DialogStepper({
         <Button onClick={handleClose} color="secondary">
           Cancel
         </Button>
+        {onConfirm && (
+          <Button onClick={onConfirm} color="primary">
+            Proceed
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );

@@ -14,12 +14,13 @@ import { StyledListItem } from './styles';
 type Props = {
   isShared: boolean;
   name: string;
-  onOpen: (id: number) => void;
+  onOpen: () => void;
+  onAction?: () => void;
 };
 
-const BudgetListItem: FC<Props> = ({ isShared, name, onOpen }) => {
+const BudgetListItem: FC<Props> = ({ isShared, name, onOpen, onAction }) => {
   return (
-    <StyledListItem onDoubleClick={onOpen}>
+    <StyledListItem onDoubleClick={() => onOpen()}>
       <ListItemAvatar>
         <Avatar>
           {isShared ? <FolderSharedOutlinedIcon /> : <FolderIcon />}
@@ -27,7 +28,11 @@ const BudgetListItem: FC<Props> = ({ isShared, name, onOpen }) => {
       </ListItemAvatar>
       <ListItemText primary={name} secondary={isShared ? 'shared' : null} />
       <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="delete">
+        <IconButton
+          edge="end"
+          aria-label="delete"
+          onClick={() => (onAction ? onAction() : null)}
+        >
           <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>
